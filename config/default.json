@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://hung:hung@cluster1.ukepu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://hung:hung@cluster1.ukepu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtKey": "secrettokenkey"
 }

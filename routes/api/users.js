@@ -9,8 +9,8 @@ const jwt = require('jsonwebtoken');
 
 //const normalize = require('normalize-url');
 
-//route GET api/users
-// test route
+//route POST api/users
+// desc register user
 // access Public
 router.post('/', 
     //https://express-validator.github.io/docs/custom-error-messages.html
@@ -83,11 +83,6 @@ router.post('/',
             console.log(error.message);
             res.status(500).send('server error')
         }
-        
-        // User.create({
-        //     name: req.body.name,
-        //     email: req.body.email,
-        // }).then(user => res.json(user));
     }
 );
 

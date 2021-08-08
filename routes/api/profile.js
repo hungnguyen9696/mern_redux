@@ -69,7 +69,7 @@ router.post('/', [auth, [
             const filter= {user: req.user.id};
 
             //https://mongoosejs.com/docs/2.7.x/docs/updating-documents.html
-            // {mew: true} => return updated profile otherwise find1andupdate return the old document
+            // {new: true} => return updated profile otherwise find1andupdate return the old document
             //upsert to add new document if it not exist yet
             let profile = await Profile.findOneAndUpdate(filter, {$set: profileFields}, {new: true, upsert: true});
             //https://mongoosejs.com/docs/tutorials/findoneandupdate.html
@@ -124,7 +124,7 @@ router.get('/user/:userId', async (req, res) => {
     }
 });
 
-// route Delete api/profile/
+// route DELETE api/profile/
 // desc delete a user and related(profile, posts)
 // access private
 
@@ -146,4 +146,49 @@ router.delete('/', auth, async(req, res) =>{
     }
 });
 
+// route PUT api/profile/experience
+// desc add profile experience
+// access private
+router.put('/experience', [auth, [
+    body('title', 'title is required').not().isEmpty(),
+    body('company', 'company is required').not().isEmpty(),
+    body('from', 'From date is required').not().isEmpty()
+    //instead of isDate() because in frontend use a date form, user dont have to type in
+]], 
+async (req,res)=> {
+    const errors = validationResult(req);
+    //console.log(errors.array());
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        //https://express-validator.github.io/docs/validation-result-api.html (return array of errors)
+        
+    }
+
+    const expFields = {
+        ...req.body,
+    };
+
+    //console.log(expFields)
+    
+    try{
+        const filter= {user: req.user.id};
+       
+        //const profile = await Profile.findOneAndUpdate(filter, {$set: {experience: expFields }}, {new: true, upsert: true});
+        //above meethod replace old exp with new exp -> failed if want to add more exp
+
+        const profile = await Profile.findOne(filter);
+        profile.experience.unshift(expFields);
+        await profile.save();
+        res.json(profile)
+      
+    }catch(error) {
+        console.log(error.message);
+        res.status(500).send('server error')
+    }
+
+
+});
+
+
 module.exports = router;
+

@@ -2,6 +2,7 @@ const express = require ('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
+const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 
 //route GET api/profile/me
@@ -120,6 +121,28 @@ router.get('/user/:userId', async (req, res) => {
             return res.status(400).json({msg: "profile not found"})
         }
         res.status(500).send('server errors');
+    }
+});
+
+// route Delete api/profile/
+// desc delete a user and related(profile, posts)
+// access private
+
+router.delete('/', auth, async(req, res) =>{
+    try {
+        //delete posts
+
+
+        //delete profile
+        await Profile.findOneAndRemove({user: req.user.id});
+
+        //delete user
+        await User.findOneAndRemove({_id: req.user.id});
+
+        res.json({msg: 'user deleted successfully'})
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('server errors')
     }
 });
 

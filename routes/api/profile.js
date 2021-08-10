@@ -4,6 +4,8 @@ const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
+const axios = require('axios');
+const config= require('config');
 
 //route GET api/profile/me
 // desc get current profile
@@ -283,13 +285,27 @@ router.delete('/education/:eduId', auth, async(req, res) =>{
 // route GET api/profile/github/:username
 // desc get github profile 
 // access public
-router.get('/github/:username', async(req,res)=> {
+router.get('/github/:username', async (req, res) => {
     try {
-        
-    } catch (error) {
-        
+        //https://docs.github.com/en/rest/reference/repos#list-repositories-for-a-user
+        //https://stackoverflow.com/questions/8713596/how-to-retrieve-the-list-of-all-github-repositories-of-a-person
+      const uri = encodeURI(
+        `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+      );
+      const headers = {
+        'user-agent': 'node.js',
+        Authorization: `token ${config.get('githubToken')}`
+      };
+  
+      const gitHubResponse = await axios.get(uri, { headers });
+      //console.log(gitHubResponse);
+      return res.json(gitHubResponse.data);
+
+    } catch (err) {
+      console.log(err.message);
+      return res.status(404).json({ msg: 'No Github profile found' });
     }
-})
+  });
 
 module.exports = router;
 

@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb+srv://hung:hung@cluster1.ukepu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "jwtKey": "secrettokenkey"
+    "jwtKey": "secrettokenkey",
+    "githubClientId": "c285b5c7f6cafab63a61",
+    "githubClientSecret": "32e36c74334844f70b57cf5ffcf1f6dd75e54f95"
 }

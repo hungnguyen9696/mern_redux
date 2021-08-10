@@ -217,5 +217,68 @@ router.delete('/experience/:expId', auth, async(req, res) =>{
     }
 });
 
+// route PUT api/profile/education
+// desc add profile education
+// access private
+router.put('/education', [auth, [
+    body('school', 'school is required').not().isEmpty(),
+    body('degree', 'degree is required').not().isEmpty(),
+    body('from', 'From date is required').not().isEmpty()
+    //instead of isDate() because in frontend use a date form, user dont have to type in
+]], 
+async (req,res)=> {
+    const errors = validationResult(req);
+    //console.log(errors.array());
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        //https://express-validator.github.io/docs/validation-result-api.html (return array of errors)
+        
+    }
+
+    const educationFields = {
+        ...req.body,
+    };
+
+    //console.log(expFields)
+    
+    try{
+        const filter= {user: req.user.id};
+
+        const profile = await Profile.findOne(filter);
+        profile.education.unshift(educationFields);
+        await profile.save();
+        res.json(profile)
+      
+    }catch(error) {
+        console.log(error.message);
+        res.status(500).send('server error')
+    }
+
+});
+
+// route DELETE api/profile/education
+// desc delete profile education
+// access private
+
+router.delete('/education/:eduId', auth, async(req, res) =>{
+    try {
+        const profile = await Profile.findOne({user: req.user.id});
+
+        //find the edu element with correct _id
+        for(let i=0; i < profile.education.length; i++) {
+            if(profile.education[i].id === req.params.eduId) {
+                profile.education.splice(i,1);
+            }
+        }
+    
+        await profile.save();
+
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('server errors')
+    }
+});
+
 module.exports = router;
 

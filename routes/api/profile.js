@@ -189,6 +189,32 @@ async (req,res)=> {
 
 });
 
+// route DELETE api/profile/experience
+// desc delete profile experience
+// access private
+
+router.delete('/experience/:expId', auth, async(req, res) =>{
+    try {
+        const profile = await Profile.findOne({user: req.user.id});
+        //console.log(profile.experience[0]._id);
+        //console.log(profile.experience[0].id); 
+
+        //find the exp element with correct _id
+        for(let i=0; i < profile.experience.length; i++) {
+            if(profile.experience[i].id === req.params.expId) {
+                profile.experience.splice(i,1);
+            }
+        }
+        // profile.experience[i]._id not work while .id works. why???
+        
+        await profile.save();
+
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('server errors')
+    }
+});
 
 module.exports = router;
 

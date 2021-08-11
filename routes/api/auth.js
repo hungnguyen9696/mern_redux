@@ -61,7 +61,7 @@ router.post('/',
                     id: user.id
                 }
             };
-            //id = _id, by mongoose abstract, check db
+            //2nd id = _id, by mongoose abstract, check db
             
 
             jwt.sign(payload, config.get("jwtKey"), {expiresIn: 360000}, (err, token)=> {

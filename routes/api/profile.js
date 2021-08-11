@@ -52,7 +52,7 @@ router.post('/', [auth, [
             ...req.body,
             user: req.user.id
             
-          };
+        };
 
         // if(company) profileFields.company= company;
         // if(website) profileFields.website= website;
@@ -77,8 +77,8 @@ router.post('/', [auth, [
             //https://mongoosejs.com/docs/tutorials/findoneandupdate.html
             return res.json(profile);
           
-        }catch(error) {
-            console.log(error.message);
+        }catch(err) {
+            console.log(err.message);
             res.status(500).send('server error')
         }
     }
@@ -183,8 +183,8 @@ async (req,res)=> {
         await profile.save();
         res.json(profile)
       
-    }catch(error) {
-        console.log(error.message);
+    }catch(err) {
+        console.log(err.message);
         res.status(500).send('server error')
     }
 
@@ -251,8 +251,8 @@ async (req,res)=> {
         await profile.save();
         res.json(profile)
       
-    }catch(error) {
-        console.log(error.message);
+    }catch(err) {
+        console.log(err.message);
         res.status(500).send('server error')
     }
 

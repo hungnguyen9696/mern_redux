@@ -7,12 +7,7 @@ const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 const Post = require('../../models/Post');
 
-//route GET api/post
-// test route
-// access Public
-router.get('/', (req,res)=> {
-    res.send('test post')
-});
+
 
 // route POST api/posts/
 // desc create a post
@@ -45,6 +40,78 @@ router.post('/', [auth,
             console.log(err.message);
             res.status(500).send('server errors')
         }
+});
+
+//route GET api/posts
+// desc get all posts
+// access private
+router.get('/', auth, async (req,res)=> {
+    try {
+        const allPosts= await Post.find().sort({date: -1});
+        res.json(allPosts);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('server errors')
+    }
+    
+});
+
+//route GET api/posts/:postId
+// desc get post by id
+// access private
+router.get('/:postId', auth, async (req,res)=> {
+    try {
+        const post= await Post.findById(req.params.postId);
+        //console.log(typeof post._id)
+       if(!post) {
+           return res.status(404).json({msg: "post not found"});
+       }
+        
+        res.json(post);
+    } catch (err) {
+        console.log(err.message);
+        if(err.kind === 'ObjectId') {
+            //check type of err if its objectid
+            //make sure we get post not found even with invalid objectId
+            return res.status(404).json({msg: "post not found"});
+        }
+        res.status(500).send('server errors')
+    }
+    
+});
+
+//route DELETE api/posts/:postId
+// desc delete post by id
+// access private
+router.delete('/:postId', auth, async (req,res)=> {
+    //make sure the user that want to delete the post is the post's owner
+    try {
+        const post= await Post.findById(req.params.postId);
+        //console.log(typeof post.user); //objectId
+        //console.log(typeof req.user.id); //string
+        if(!post) {
+            return res.status(404).json({msg: "post not found"});
+        }
+
+        //check user
+        if(post.user.toString() !== req.user.id) {
+            return res.status(401).json({msg: "you are not authorized to delete the post"});
+        }
+        
+        await post.remove();
+        
+        res.json({msg: "post deleted"});
+
+    } catch (err) {
+        console.log(err.message);
+        if(err.kind === 'ObjectId') {
+            //check type of err if its objectid
+            //make sure we get post not found even with invalid objectId
+        return res.status(404).json({msg: "post not found"});
+        }
+        res.status(500).send('server errors')
+    }
+    
 });
 
 module.exports = router;

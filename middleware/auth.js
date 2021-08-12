@@ -14,13 +14,14 @@ module.exports= async function(req,res,next) {
     //verify token
     try{
         const decoded = jwt.verify(token, config.get('jwtKey'));
-
+        //console.log(decoded);
         const user = await User.findById(decoded.user.id);
         if (!user) {
         return res.status(401).json({ msg: 'Token is not valid' });
         }
 
         req.user= decoded.user;
+       
         next();
 
     }catch(err) {

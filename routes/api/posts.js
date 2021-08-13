@@ -131,21 +131,17 @@ router.put('/like/:postId', auth, async (req,res)=> {
 
         //check if user already liked post
         if(arrId.includes(userLikeId) === false){
-            const newNumberOfLikes = likedPost.likes.push({user: userLikeId});
-            await likedPost.save();
-            res.json(likedPost.likes);
-            //res.json(newNumberOfLikes)
-
+            likedPost.likes.push({user: userLikeId});
         } else{
             for(let i=0; i < likedPost.likes.length; i++) {
                 if(likedPost.likes[i].user.toString() === req.user.id) {
                     likedPost.likes.splice(i,1);
                 }
             }
-            await likedPost.save();
-            res.json(likedPost.likes);
-            //res.json(likedPost.likes.length)
         }
+        await likedPost.save();
+        res.json(likedPost.likes);
+        //res.json(likedPost.likes.length)
       
     }catch(err) {
         console.log(err.message);

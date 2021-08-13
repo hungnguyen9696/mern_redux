@@ -154,4 +154,38 @@ router.put('/like/:postId', auth, async (req,res)=> {
     }
 });
 
+// route POST api/posts/comment/:postId
+// desc create a comment
+// access private
+router.post('/comment/:postId', [auth, 
+    body('text', 'text is required').not().isEmpty()], 
+
+    async(req, res) =>{
+        const errors = validationResult(req);
+        //console.log(errors.array());
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+            //https://express-validator.github.io/docs/validation-result-api.html (return array of errors)
+        }
+        try {
+           const user= await User.findById(req.user.id).select('-password');
+           const post = await Post.findById(req.params.postId);
+
+           const newComment = {
+               user: req.user.id,
+               text: req.body.text,
+               name: user.name,
+               avatar: user.avatar
+           };
+           post.comments.unshift(newComment);
+          
+           await post.save();
+
+           res.json(post.comments);
+        } catch (err) {
+            console.log(err.message);
+            res.status(500).send('server errors')
+        }
+});
+
 module.exports = router;

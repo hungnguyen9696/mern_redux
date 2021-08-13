@@ -114,4 +114,48 @@ router.delete('/:postId', auth, async (req,res)=> {
     
 });
 
+// route PUT api/posts/like/:postId
+// desc add like
+// access private
+
+//current diff
+router.put('/like/:postId', auth, async (req,res)=> {
+    try {
+        const userLikeId = req.user.id;
+        const likedPost = await Post.findById(req.params.postId);
+        if(!likedPost) {
+            return res.status(404).json({msg: "post not found"});
+        }
+      
+        const arrId= likedPost.likes.map(item => item.user);
+
+        //check if user already liked post
+        if(arrId.includes(userLikeId) === false){
+            const newNumberOfLikes = likedPost.likes.push({user: userLikeId});
+            await likedPost.save();
+            res.json(likedPost.likes);
+            //res.json(newNumberOfLikes)
+
+        } else{
+            for(let i=0; i < likedPost.likes.length; i++) {
+                if(likedPost.likes[i].user.toString() === req.user.id) {
+                    likedPost.likes.splice(i,1);
+                }
+            }
+            await likedPost.save();
+            res.json(likedPost.likes);
+            //res.json(likedPost.likes.length)
+        }
+      
+    }catch(err) {
+        console.log(err.message);
+        if(err.kind === 'ObjectId') {
+            //check type of err if its objectid
+            //make sure we get post not found even with invalid objectId
+        return res.status(404).json({msg: "post not found"});
+        }
+        res.status(500).send('server error')
+    }
+});
+
 module.exports = router;

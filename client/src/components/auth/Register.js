@@ -1,14 +1,17 @@
 import React, { Fragment, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { setAlert } from "../../actions/alert";
+import { connect, useDispatch } from "react-redux";
 
-const Register = () => {
+const Register = (props) => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
 		password: "",
 		password2: "",
 	});
+	const dispatch = useDispatch();
 	const { name, email, password, password2 } = formData;
 
 	const onChange = (e) => {
@@ -19,7 +22,8 @@ const Register = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		if (password !== password2) {
-			console.log("password not match");
+			//props.setAlert("password not match", "danger");
+			dispatch(setAlert("password not match", "danger"));
 		} else {
 			console.log("success");
 			// console.log(formData);
@@ -115,4 +119,5 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default connect(null, { setAlert })(Register);
+//https://react-redux.js.org/api/connect

@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from "react";
-import axios from "axios";
+
 import { Link } from "react-router-dom";
 import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
 import { connect, useDispatch } from "react-redux";
 
 const Register = (props) => {
@@ -26,6 +27,7 @@ const Register = (props) => {
 			dispatch(setAlert("password not match", "danger"));
 		} else {
 			console.log("success");
+			dispatch(register(email, name, password));
 			// console.log(formData);
 			// const newUser = {
 			// 	name: name,

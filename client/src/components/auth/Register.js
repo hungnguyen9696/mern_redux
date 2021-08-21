@@ -68,7 +68,6 @@ const Register = (props) => {
 						placeholder="Name"
 						name="name"
 						value={name}
-						required
 						onChange={onChange}
 					/>
 				</div>
@@ -79,7 +78,6 @@ const Register = (props) => {
 						name="email"
 						value={email}
 						onChange={onChange}
-						required
 					/>
 					<small className="form-text">
 						This site uses Gravatar so if you want a profile image,
@@ -91,10 +89,8 @@ const Register = (props) => {
 						type="password"
 						placeholder="Password"
 						name="password"
-						minLength="6"
 						value={password}
 						onChange={onChange}
-						required
 					/>
 				</div>
 				<div className="form-group">
@@ -102,10 +98,8 @@ const Register = (props) => {
 						type="password"
 						placeholder="Confirm Password"
 						name="password2"
-						minLength="6"
 						value={password2}
 						onChange={onChange}
-						required
 					/>
 				</div>
 				<input

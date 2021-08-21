@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./components/layout/Landing";
 import Navbar from "./components/layout/Navbar";
@@ -8,7 +8,15 @@ import Alert from "./components/layout/Alert";
 //https://stackoverflow.com/questions/36426521/what-does-export-default-do-in-jsx/36426988
 import "./App.css";
 
+import { loadUser } from "./actions/auth";
+import store from "./store";
+
 const App = () => {
+	useEffect(() => {
+		if (localStorage.token) {
+			store.dispatch(loadUser());
+		}
+	}, []);
 	return (
 		<Router>
 			<Fragment>

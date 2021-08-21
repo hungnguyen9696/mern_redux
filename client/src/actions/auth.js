@@ -3,6 +3,8 @@ import {
 	REGISTER_SUCCESS,
 	AUTH_ERROR,
 	USER_LOADED,
+	LOGIN_FAIL,
+	LOGIN_SUCCESS,
 } from "./types";
 import axios from "axios";
 import { setAlert } from "./alert";
@@ -43,6 +45,7 @@ export const register = (email, name, password) => async (dispatch) => {
 			type: REGISTER_SUCCESS,
 			payload: res.data,
 		});
+		dispatch(loadUser());
 	} catch (err) {
 		//https://axios-http.com/docs/handling_errors
 		//err.response.data = backend return
@@ -53,6 +56,37 @@ export const register = (email, name, password) => async (dispatch) => {
 		}
 		dispatch({
 			type: REGISTER_FAIL,
+		});
+	}
+};
+
+export const login = (email, password) => async (dispatch) => {
+	const axiosConfig = {
+		headers: {
+			"Content-Type": "application/json;charset=UTF-8",
+			"Access-Control-Allow-Origin": "*",
+		},
+	};
+	const user = { email: email, password: password };
+	const body = JSON.stringify(user);
+
+	try {
+		const res = await axios.post("/api/auth", body, axiosConfig);
+		dispatch({
+			type: LOGIN_SUCCESS,
+			payload: res.data,
+		});
+		dispatch(loadUser());
+	} catch (err) {
+		//https://axios-http.com/docs/handling_errors
+		//err.response.data = backend return
+		console.log(err.response.data);
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+		}
+		dispatch({
+			type: LOGIN_FAIL,
 		});
 	}
 };

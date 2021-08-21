@@ -5,6 +5,7 @@ import Navbar from "./components/layout/Navbar";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
+
 //https://stackoverflow.com/questions/36426521/what-does-export-default-do-in-jsx/36426988
 import "./App.css";
 

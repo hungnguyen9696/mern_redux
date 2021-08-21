@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
-
+import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 
 const Login = () => {
@@ -10,6 +10,7 @@ const Login = () => {
 		password: "",
 	});
 	const dispatch = useDispatch();
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const { email, password } = formData;
 
 	const onChange = (e) => {
@@ -22,6 +23,10 @@ const Login = () => {
 
 		dispatch(login(email, password));
 	};
+
+	if (isAuthenticated) {
+		return <Redirect to="/dashboard" />;
+	}
 
 	return (
 		<Fragment>
@@ -37,7 +42,6 @@ const Login = () => {
 						name="email"
 						value={email}
 						onChange={onChange}
-						required
 					/>
 				</div>
 				<div className="form-group">
@@ -45,10 +49,8 @@ const Login = () => {
 						type="password"
 						placeholder="Password"
 						name="password"
-						minLength="6"
 						value={password}
 						onChange={onChange}
-						required
 					/>
 				</div>
 

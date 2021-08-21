@@ -3,7 +3,8 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const Register = (props) => {
 	const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ const Register = (props) => {
 		password2: "",
 	});
 	const dispatch = useDispatch();
+
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const { name, email, password, password2 } = formData;
 
 	const onChange = (e) => {
@@ -55,6 +58,9 @@ const Register = (props) => {
 		}
 	};
 
+	if (isAuthenticated) {
+		return <Redirect to="/dashboard" />;
+	}
 	return (
 		<Fragment>
 			<h1 className="large text-primary">Sign Up</h1>
@@ -115,5 +121,5 @@ const Register = (props) => {
 	);
 };
 
-export default connect(null, { setAlert })(Register);
+export default connect(null, { setAlert, register })(Register);
 //https://react-redux.js.org/api/connect

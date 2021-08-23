@@ -3,16 +3,19 @@ import { Link } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/auth";
 
-const Navbar = (props) => {
+const Navbar = () => {
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	//const dispatch = useDispatch();
+	const dispatch = useDispatch();
+	const logoutUser = () => {
+		dispatch(logout());
+	};
 	const authLinks = (
 		<ul>
 			<li>
 				<Link to="/">Developers</Link>
 			</li>
 			<li>
-				<Link to="/" onClick={props.logout}>
+				<Link to="/" onClick={logoutUser}>
 					<i className="fas fa-sign-out-alt" />{" "}
 					<span className="hide-sm">Logout</span>
 				</Link>

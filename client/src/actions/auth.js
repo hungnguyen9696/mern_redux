@@ -6,6 +6,7 @@ import {
 	LOGIN_FAIL,
 	LOGIN_SUCCESS,
 	LOGOUT,
+	CLEAR_PROFILE,
 } from "./types";
 import axios from "axios";
 import { setAlert } from "./alert";
@@ -50,7 +51,7 @@ export const register = (email, name, password) => async (dispatch) => {
 	} catch (err) {
 		//https://axios-http.com/docs/handling_errors
 		//err.response.data = backend return
-		console.log(err.response.data);
+		console.log(err.response);
 		const errors = err.response.data.errors;
 		if (errors) {
 			errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
@@ -61,18 +62,19 @@ export const register = (email, name, password) => async (dispatch) => {
 	}
 };
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (formData) => async (dispatch) => {
 	const axiosConfig = {
 		headers: {
 			"Content-Type": "application/json;charset=UTF-8",
 			"Access-Control-Allow-Origin": "*",
 		},
 	};
-	const user = { email: email, password: password };
-	const body = JSON.stringify(user);
+	// const user = { email: email, password: password };
+	// const body = JSON.stringify(user);
+	//const body = { email, password };
 
 	try {
-		const res = await axios.post("/api/auth", body, axiosConfig);
+		const res = await axios.post("/api/auth", formData, axiosConfig);
 		dispatch({
 			type: LOGIN_SUCCESS,
 			payload: res.data,
@@ -93,6 +95,9 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
+	dispatch({
+		type: CLEAR_PROFILE,
+	});
 	dispatch({
 		type: LOGOUT,
 	});

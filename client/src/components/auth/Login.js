@@ -21,7 +21,7 @@ const Login = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 
-		dispatch(login(email, password));
+		dispatch(login(formData));
 	};
 
 	if (isAuthenticated) {

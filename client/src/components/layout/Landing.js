@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const Landing = () => {
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	if (isAuthenticated) {
+		return <Redirect to="/dashboard" />;
+	}
 	return (
 		<section className="landing">
 			<div className="dark-overlay">
@@ -26,4 +32,4 @@ const Landing = () => {
 	);
 };
 
-export default Landing;
+export default connect(null)(Landing);

@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
+import DashboardActions from "./DashboardActions";
 
 const Dashboard = (props) => {
 	const profile = useSelector((state) => state.profile);
@@ -24,7 +25,9 @@ const Dashboard = (props) => {
 			</p>
 
 			{profile.profile !== null ? (
-				<Fragment>has pro5</Fragment>
+				<Fragment>
+					<DashboardActions />
+				</Fragment>
 			) : (
 				<Fragment>
 					<p>You dont have a profile yet</p>

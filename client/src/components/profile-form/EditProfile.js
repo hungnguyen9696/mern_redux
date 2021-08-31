@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
-import { createProfile } from "../../actions/profile";
+import { createProfile, getCurrentProfile } from "../../actions/profile";
 
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 
-const CreateProfile = (props) => {
+const EditProfile = (props) => {
 	const [formData, setFormData] = useState({
 		status: "",
 		company: "",
@@ -16,7 +16,9 @@ const CreateProfile = (props) => {
 		bio: "",
 		linkedin: "",
 	});
-
+	//get current profile data
+	const profile = useSelector((state) => state.profile.profile);
+	const loading = useSelector((state) => state.profile.loading);
 	const dispatch = useDispatch();
 	const history = props.history;
 	const {
@@ -39,12 +41,28 @@ const CreateProfile = (props) => {
 		e.preventDefault();
 
 		console.log("success");
-		dispatch(createProfile(formData, history));
+		dispatch(createProfile(formData, history, true));
 	};
+
+	useEffect(() => {
+		dispatch(getCurrentProfile());
+		setFormData({
+			status: loading || profile.status ? profile.status : "",
+			company: loading || profile.company ? profile.company : "",
+			website: loading || profile.website ? profile.website : "",
+			location: loading || profile.location ? profile.location : "",
+			skills: loading || profile.skills ? profile.skills.join() : "",
+			githubusername:
+				loading || profile.githubusername ? profile.githubusername : "",
+			bio: loading || profile.bio ? profile.bio : "",
+			linkedin: loading || profile.linkedin ? profile.linkedin : "",
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loading, getCurrentProfile]);
 
 	return (
 		<Fragment>
-			<h1 className="large text-primary">Create Your Profile</h1>
+			<h1 className="large text-primary">Edit Your Profile</h1>
 			<p className="lead">
 				<i className="fas fa-user"></i> Let's get some information to
 				make your profile stand out
@@ -163,5 +181,7 @@ const CreateProfile = (props) => {
 	);
 };
 
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+export default connect(null, { createProfile, getCurrentProfile })(
+	withRouter(EditProfile)
+);
 //withRouter let component access match, history, location

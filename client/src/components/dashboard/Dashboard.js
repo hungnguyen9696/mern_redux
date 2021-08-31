@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
 import DashboardActions from "./DashboardActions";
+import Education from "./Education";
+import Experience from "./Experience";
 
 const Dashboard = (props) => {
 	const profile = useSelector((state) => state.profile);
@@ -13,6 +15,7 @@ const Dashboard = (props) => {
 		props.getCurrentProfile();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	return auth.loading && profile.profile === null ? (
 		<Spinner />
 	) : (
@@ -27,6 +30,7 @@ const Dashboard = (props) => {
 			{profile.profile !== null ? (
 				<Fragment>
 					<DashboardActions />
+					<Experience experience={profile.profile.experience} />
 				</Fragment>
 			) : (
 				<Fragment>

@@ -31,6 +31,7 @@ const Dashboard = (props) => {
 				<Fragment>
 					<DashboardActions />
 					<Experience experience={profile.profile.experience} />
+					<Education education={profile.profile.education} />
 				</Fragment>
 			) : (
 				<Fragment>

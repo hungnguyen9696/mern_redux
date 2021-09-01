@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Moment from "react-moment";
+import { deleteExperience } from "../../actions/profile";
 
 //https://www.npmjs.com/package/react-moment
 const Experience = (props) => {
+	const dispatch = useDispatch();
 	const experiencesList = props.experience.map((exp) => (
 		<tr key={exp._id}>
 			<td>{exp.company}</td>
@@ -17,7 +19,12 @@ const Experience = (props) => {
 				)}
 			</td>
 			<td>
-				<button className="btn btn-danger">Delete</button>
+				<button
+					onClick={() => dispatch(deleteExperience(exp._id))}
+					className="btn btn-danger"
+				>
+					Delete
+				</button>
 			</td>
 		</tr>
 	));
@@ -39,4 +46,4 @@ const Experience = (props) => {
 	);
 };
 
-export default Experience;
+export default connect(null, { deleteExperience })(Experience);

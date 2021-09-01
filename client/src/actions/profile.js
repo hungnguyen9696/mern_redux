@@ -1,7 +1,13 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import { PROFILE_ERROR, GET_PROFILE, UPDATE_PROFILE } from "./types";
+import {
+	PROFILE_ERROR,
+	GET_PROFILE,
+	UPDATE_PROFILE,
+	DELETE_ACCOUNT,
+	CLEAR_PROFILE,
+} from "./types";
 
 //get current profile
 export const getCurrentProfile = () => async (dispatch) => {
@@ -144,5 +150,75 @@ export const addEducation = (formData, history) => async (dispatch) => {
 				status: err.response.status, //400
 			},
 		});
+	}
+};
+
+//delete experience
+export const deleteExperience = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete(`/api/profile/experience/${id}`);
+		dispatch({
+			type: UPDATE_PROFILE,
+			payload: res.data,
+		});
+		dispatch(setAlert("Experience deleted", "success"));
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			//https://axios-http.com/docs/handling_errors
+			//err.response.data = backend return
+			payload: {
+				msg: err.response.statusText, //bad request
+				status: err.response.status, //400
+			},
+		});
+	}
+};
+
+//delete education
+export const deleteEducation = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete(`/api/profile/education/${id}`);
+		dispatch({
+			type: UPDATE_PROFILE,
+			payload: res.data,
+		});
+		dispatch(setAlert("Education deleted", "success"));
+	} catch (err) {
+		dispatch({
+			type: PROFILE_ERROR,
+			//https://axios-http.com/docs/handling_errors
+			//err.response.data = backend return
+			payload: {
+				msg: err.response.statusText, //bad request
+				status: err.response.status, //400
+			},
+		});
+	}
+};
+
+//delete account and profile (back to login)
+export const deleteAccount = () => async (dispatch) => {
+	if (window.confirm("Are you sure? This cant be undone!")) {
+		try {
+			const res = await axios.delete("/api/profile/");
+			dispatch({
+				type: CLEAR_PROFILE,
+			});
+			dispatch({
+				type: DELETE_ACCOUNT,
+			});
+			dispatch(setAlert("Account deleted", "success"));
+		} catch (err) {
+			dispatch({
+				type: PROFILE_ERROR,
+				//https://axios-http.com/docs/handling_errors
+				//err.response.data = backend return
+				payload: {
+					msg: err.response.statusText, //bad request
+					status: err.response.status, //400
+				},
+			});
+		}
 	}
 };

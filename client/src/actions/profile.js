@@ -249,3 +249,26 @@ export const getProfiles = () => async (dispatch) => {
 		});
 	}
 };
+
+//get profile by ID
+export const getProfileById = (userId) => async (dispatch) => {
+	try {
+		const res = await axios.get(`/api/profile/user/${userId}`);
+
+		dispatch({
+			type: GET_PROFILE,
+			payload: res.data,
+		});
+	} catch (err) {
+		console.log(err);
+		dispatch({
+			type: PROFILE_ERROR,
+			//https://axios-http.com/docs/handling_errors
+			//err.response.data = backend return
+			payload: {
+				msg: err.response.statusText,
+				status: err.response.status,
+			},
+		});
+	}
+};

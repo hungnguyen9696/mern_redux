@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCurrentProfile } from "../../actions/profile";
+import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
 import DashboardActions from "./DashboardActions";
 import Education from "./Education";
@@ -10,6 +10,7 @@ import Experience from "./Experience";
 const Dashboard = (props) => {
 	const profile = useSelector((state) => state.profile);
 	const auth = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		props.getCurrentProfile();
@@ -32,6 +33,16 @@ const Dashboard = (props) => {
 					<DashboardActions />
 					<Experience experience={profile.profile.experience} />
 					<Education education={profile.profile.education} />
+
+					<div className="my-2">
+						<button
+							className="btn btn-danger"
+							onClick={() => dispatch(deleteAccount())}
+						>
+							<i className="fas fa-user-minus"></i>
+							Delete My Account
+						</button>
+					</div>
 				</Fragment>
 			) : (
 				<Fragment>
@@ -46,4 +57,4 @@ const Dashboard = (props) => {
 	);
 };
 
-export default connect(null, { getCurrentProfile })(Dashboard);
+export default connect(null, { getCurrentProfile, deleteAccount })(Dashboard);

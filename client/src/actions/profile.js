@@ -7,6 +7,7 @@ import {
 	UPDATE_PROFILE,
 	DELETE_ACCOUNT,
 	CLEAR_PROFILE,
+	GET_PROFILES,
 } from "./types";
 
 //get current profile
@@ -220,5 +221,31 @@ export const deleteAccount = () => async (dispatch) => {
 				},
 			});
 		}
+	}
+};
+
+//get all profiles
+export const getProfiles = () => async (dispatch) => {
+	dispatch({
+		type: CLEAR_PROFILE,
+	});
+	try {
+		const res = await axios.get("/api/profile/all");
+
+		dispatch({
+			type: GET_PROFILES,
+			payload: res.data,
+		});
+	} catch (err) {
+		console.log(err);
+		dispatch({
+			type: PROFILE_ERROR,
+			//https://axios-http.com/docs/handling_errors
+			//err.response.data = backend return
+			payload: {
+				msg: err.response.statusText,
+				status: err.response.status,
+			},
+		});
 	}
 };

@@ -6,6 +6,7 @@ import { getProfileById } from "../../actions/profile";
 import { Link, useHistory, useParams } from "react-router-dom";
 import ProfileTop from "./ProfileTop";
 import ProfileAbout from "./ProfileAbout";
+import ProfileExperience from "./ProfileExperience";
 
 const Profile = (props) => {
 	const profile = useSelector((state) => state.profile);
@@ -39,6 +40,17 @@ const Profile = (props) => {
 					<div class="profile-grid my-1">
 						<ProfileTop profile={profile.profile} />
 						<ProfileAbout profile={profile.profile} />
+						<div className="profile-exp bg-white p-2">
+							<h2 className="text-primary">Experience</h2>
+							{profile.profile.experience &&
+							profile.profile.experience.length > 0 ? (
+								<ProfileExperience
+									experience={profile.profile.experience}
+								/>
+							) : (
+								<h4>No experience credentials</h4>
+							)}
+						</div>
 					</div>
 				</Fragment>
 			)}

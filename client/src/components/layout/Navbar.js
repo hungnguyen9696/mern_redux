@@ -18,7 +18,7 @@ const Navbar = () => {
 				</Link>
 			</li>
 			<li>
-				<Link to="/">Developers</Link>
+				<Link to="/profiles">Developers</Link>
 			</li>
 			<li>
 				<Link to="/" onClick={logoutUser}>
@@ -32,7 +32,7 @@ const Navbar = () => {
 	const guestLinks = (
 		<ul>
 			<li>
-				<Link to="/">Developers</Link>
+				<Link to="/profiles">Developers</Link>
 			</li>
 			<li>
 				<Link to="/register">Register</Link>

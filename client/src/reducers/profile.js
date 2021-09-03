@@ -33,9 +33,9 @@ export default function (state = initialState, action) {
 		case CLEAR_PROFILE:
 			return {
 				...state,
-				loading: false,
+
 				profile: null,
-				repo: [],
+				repos: [],
 			};
 		case UPDATE_PROFILE:
 			return {
@@ -55,6 +55,7 @@ export default function (state = initialState, action) {
 				repos: action.payload,
 				loading: false,
 			};
+
 		default:
 			return state;
 	}

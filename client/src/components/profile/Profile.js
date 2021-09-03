@@ -7,6 +7,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import ProfileTop from "./ProfileTop";
 import ProfileAbout from "./ProfileAbout";
 import ProfileExperience from "./ProfileExperience";
+import ProfileEducation from "./ProfileEducation";
 
 const Profile = (props) => {
 	const profile = useSelector((state) => state.profile);
@@ -49,6 +50,17 @@ const Profile = (props) => {
 								/>
 							) : (
 								<h4>No experience credentials</h4>
+							)}
+						</div>
+						<div class="profile-edu bg-white p-2">
+							<h2 class="text-primary">Education</h2>
+							{profile.profile.education &&
+							profile.profile.education.length > 0 ? (
+								<ProfileEducation
+									education={profile.profile.education}
+								/>
+							) : (
+								<h4>No education credentials</h4>
 							)}
 						</div>
 					</div>

@@ -10,6 +10,7 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import CreateProfile from "./components/profile-form/CreateProfile";
 import EditProfile from "./components/profile-form/EditProfile";
 import Profiles from "./components/profiles/Profiles";
+import Profile from "./components/profile/Profile";
 
 //https://stackoverflow.com/questions/36426521/what-does-export-default-do-in-jsx/36426988
 import "./App.css";
@@ -36,6 +37,11 @@ const App = () => {
 						<Route exact path="/register" component={Register} />
 						<Route exact path="/login" component={Login} />
 						<Route exact path="/profiles" component={Profiles} />
+						<Route
+							exact
+							path="/profile/:userId"
+							component={Profile}
+						/>
 						<PrivateRoute
 							exact
 							path="/dashboard"

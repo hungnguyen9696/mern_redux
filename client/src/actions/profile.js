@@ -23,6 +23,9 @@ export const getCurrentProfile = () => async (dispatch) => {
 	} catch (err) {
 		console.log(err);
 		dispatch({
+			type: CLEAR_PROFILE,
+		});
+		dispatch({
 			type: PROFILE_ERROR,
 			//https://axios-http.com/docs/handling_errors
 			//err.response.data = backend return

@@ -1,13 +1,14 @@
 import React, { Fragment, useEffect } from "react";
-import PropTypes from "prop-types";
+
 import { connect, useSelector, useDispatch } from "react-redux";
 import Spinner from "../layout/Spinner";
-import { getProfileById } from "../../actions/profile";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { getProfileById, getGithubRepos } from "../../actions/profile";
+import { Link, useParams } from "react-router-dom";
 import ProfileTop from "./ProfileTop";
 import ProfileAbout from "./ProfileAbout";
 import ProfileExperience from "./ProfileExperience";
 import ProfileEducation from "./ProfileEducation";
+import ProfileRepos from "./ProfileRepos";
 
 const Profile = (props) => {
 	const profile = useSelector((state) => state.profile);
@@ -38,7 +39,7 @@ const Profile = (props) => {
 							</Link>
 						)}
 
-					<div class="profile-grid my-1">
+					<div className="profile-grid my-1">
 						<ProfileTop profile={profile.profile} />
 						<ProfileAbout profile={profile.profile} />
 						<div className="profile-exp bg-white p-2">
@@ -52,8 +53,8 @@ const Profile = (props) => {
 								<h4>No experience credentials</h4>
 							)}
 						</div>
-						<div class="profile-edu bg-white p-2">
-							<h2 class="text-primary">Education</h2>
+						<div className="profile-edu bg-white p-2">
+							<h2 className="text-primary">Education</h2>
 							{profile.profile.education &&
 							profile.profile.education.length > 0 ? (
 								<ProfileEducation
@@ -63,6 +64,12 @@ const Profile = (props) => {
 								<h4>No education credentials</h4>
 							)}
 						</div>
+
+						{profile.profile.githubusername && (
+							<ProfileRepos
+								githubusername={profile.profile.githubusername}
+							/>
+						)}
 					</div>
 				</Fragment>
 			)}
@@ -70,4 +77,4 @@ const Profile = (props) => {
 	);
 };
 
-export default connect(null, { getProfileById })(Profile);
+export default connect(null, { getProfileById, getGithubRepos })(Profile);

@@ -19,6 +19,7 @@ import { loadUser } from "./actions/auth";
 import store from "./store";
 import AddExperience from "./components/profile-form/AddExperience";
 import AddEducation from "./components/profile-form/AddEducation";
+import Posts from "./components/posts/Posts";
 
 const App = () => {
 	useEffect(() => {
@@ -67,6 +68,7 @@ const App = () => {
 							path="/add-education"
 							component={AddEducation}
 						/>
+						<PrivateRoute exact path="/posts" component={Posts} />
 					</Switch>
 				</section>
 			</Fragment>

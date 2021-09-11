@@ -7,6 +7,8 @@ import CommentItem from "./CommentItem";
 import CommentForm from "./CommentForm";
 
 const Post = (props) => {
+	//postId is not a random one.
+	//It comes from <Route path="" component={Post}/>
 	const { postId } = useParams();
 	const dispatch = useDispatch();
 

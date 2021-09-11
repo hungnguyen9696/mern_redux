@@ -16,6 +16,7 @@ const CommentForm = ({ postId }) => {
 	const onSubmit = (e) => {
 		e.preventDefault();
 		dispatch(addComment(data, postId));
+		setData({ text: "" });
 	};
 	return (
 		<Fragment>

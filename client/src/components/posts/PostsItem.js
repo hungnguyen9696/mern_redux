@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { likePost } from "../../actions/posts";
+import { likePost, removePost } from "../../actions/posts";
 
 const PostsItem = ({ post }) => {
 	const auth = useSelector((state) => state.auth);
@@ -13,6 +13,9 @@ const PostsItem = ({ post }) => {
 		dispatch(likePost(post._id));
 	};
 
+	const remove = () => {
+		dispatch(removePost(post._id));
+	};
 	return (
 		<Fragment>
 			<div className="post bg-white p-1 my-1">
@@ -33,20 +36,28 @@ const PostsItem = ({ post }) => {
 						type="button"
 						className="btn btn-light"
 					>
-						<i className="fas fa-thumbs-up"></i>
-						<span>{post.likes.length}</span>
+						<i className="fas fa-thumbs-up"></i>{" "}
+						{post.likes.length > 0 && (
+							<span>{post.likes.length}</span>
+						)}
 					</button>
 
 					<Link to={`/post/${post._id}`} className="btn btn-primary">
 						Comment{" "}
-						<span className="comment-count">
-							{post.comments.length}
-						</span>
+						{post.comments.length > 0 && (
+							<span className="comment-count">
+								{post.comments.length}
+							</span>
+						)}
 					</Link>
 					{auth.isAuthenticated &&
 						auth.loading === false &&
 						auth.user._id === post.user && (
-							<button type="button" className="btn btn-danger">
+							<button
+								onClick={remove}
+								type="button"
+								className="btn btn-danger"
+							>
 								Delete
 							</button>
 						)}

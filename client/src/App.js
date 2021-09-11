@@ -11,6 +11,7 @@ import CreateProfile from "./components/profile-form/CreateProfile";
 import EditProfile from "./components/profile-form/EditProfile";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profile/Profile";
+import Post from "./components/post/Post";
 
 //https://stackoverflow.com/questions/36426521/what-does-export-default-do-in-jsx/36426988
 import "./App.css";
@@ -69,6 +70,11 @@ const App = () => {
 							component={AddEducation}
 						/>
 						<PrivateRoute exact path="/posts" component={Posts} />
+						<PrivateRoute
+							exact
+							path="/post/:postId"
+							component={Post}
+						/>
 					</Switch>
 				</section>
 			</Fragment>

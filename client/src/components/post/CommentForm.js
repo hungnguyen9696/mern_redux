@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { connect, useDispatch } from "react-redux";
-import { addPost } from "../../actions/posts";
+import { addComment } from "../../actions/posts";
 
-const PostForm = (props) => {
+const CommentForm = ({ postId }) => {
 	const [data, setData] = useState({
 		text: "",
 	});
@@ -15,21 +15,20 @@ const PostForm = (props) => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		dispatch(addPost(data));
-		setData({ text: "" });
+		dispatch(addComment(data, postId));
 	};
 	return (
 		<Fragment>
 			<div className="post-form">
 				<div className="bg-primary p">
-					<h3>Say Something...</h3>
+					<h3>Leave A Comment</h3>
 				</div>
 				<form onSubmit={onSubmit} className="form my-1">
 					<textarea
 						name="text"
 						cols="30"
 						rows="5"
-						placeholder="Create a post"
+						placeholder="Comment on this post"
 						required
 						value={text}
 						onChange={onChange}
@@ -45,4 +44,4 @@ const PostForm = (props) => {
 	);
 };
 
-export default connect(null, { addPost })(PostForm);
+export default connect(null, { addComment })(CommentForm);

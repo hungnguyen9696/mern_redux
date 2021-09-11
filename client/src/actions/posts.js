@@ -29,12 +29,12 @@ export const getPosts = () => async (dispatch) => {
 
 //create/add post
 export const addPost = (text) => async (dispatch) => {
+	const axiosConfig = {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
 	try {
-		const axiosConfig = {
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
 		const res = await axios.post("/api/posts", text, axiosConfig);
 		dispatch({
 			type: ADD_POST,

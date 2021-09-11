@@ -1,8 +1,11 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import { connect, useSelector } from "react-redux";
 
 const PostsItem = ({ post }) => {
+	const auth = useSelector((state) => state.auth);
+
 	return (
 		<Fragment>
 			<div className="post bg-white p-1 my-1">
@@ -29,13 +32,17 @@ const PostsItem = ({ post }) => {
 							{post.comments.length}
 						</span>
 					</Link>
-					<button type="button" className="btn btn-danger">
-						Delete
-					</button>
+					{auth.isAuthenticated &&
+						auth.loading === false &&
+						auth.user._id === post.user && (
+							<button type="button" className="btn btn-danger">
+								Delete
+							</button>
+						)}
 				</div>
 			</div>
 		</Fragment>
 	);
 };
 
-export default PostsItem;
+export default connect(null)(PostsItem);

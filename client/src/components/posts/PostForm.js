@@ -3,16 +3,19 @@ import { connect, useDispatch } from "react-redux";
 import { addPost } from "../../actions/posts";
 
 const PostForm = (props) => {
-	const [text, setText] = useState("");
+	const [data, setText] = useState({
+		text: "",
+	});
+	const { text } = data;
 	const dispatch = useDispatch();
 
 	const onChange = (e) => {
-		setText(e.target.value);
+		setText({ text: e.target.value });
 	};
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		dispatch(addPost(text));
+		dispatch(addPost(data));
 	};
 	return (
 		<Fragment>

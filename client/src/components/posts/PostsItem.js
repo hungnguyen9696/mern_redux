@@ -1,10 +1,17 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { likePost } from "../../actions/posts";
 
 const PostsItem = ({ post }) => {
 	const auth = useSelector((state) => state.auth);
+
+	const dispatch = useDispatch();
+
+	const onClick = () => {
+		dispatch(likePost(post._id));
+	};
 
 	return (
 		<Fragment>
@@ -21,7 +28,11 @@ const PostsItem = ({ post }) => {
 						Posted on
 						<Moment format="YYYY/MM/DD">{post.date}</Moment>
 					</p>
-					<button type="button" className="btn btn-light">
+					<button
+						onClick={onClick}
+						type="button"
+						className="btn btn-light"
+					>
 						<i className="fas fa-thumbs-up"></i>
 						<span>{post.likes.length}</span>
 					</button>
